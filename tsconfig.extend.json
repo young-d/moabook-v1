@@ -7,7 +7,7 @@
       "@components/*": ["./components/*"],
       "@domains/*": ["./domains/*"],
       "@hooks/*": ["./hooks/*"],
-      "@redux/*": ["./redux/*"],
+      "@contexts/*": ["./contexts/*"],
     }
   }
 }
