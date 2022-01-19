@@ -34,9 +34,9 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.section`
-  min-height: 70vh;
+  height: 68%;
   background-color: #efefef;
-  border-radius: 100px 100px 0 0;
+  border-radius: 70px 70px 0 0;
   margin-top: auto;
   text-align: center;
   padding: 40px 0;
