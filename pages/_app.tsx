@@ -15,7 +15,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 const RootContainer = styled.div`
   width: 100%;
-  min-height: 100%;
+  min-height: 100vh;
+  background-color: #085ff3;
 `;
 
 export default MyApp;
