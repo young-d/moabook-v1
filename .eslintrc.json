@@ -14,6 +14,15 @@
     "prefer-arrow-callback": "error", // 함수 표현식 대신 화살표 함수를 사용한다.
     "lines-between-class-members": ["error", "always"], // 메서드 문법 사용 시 메서드 사이에 개행을 추가한다.
     "object-shorthand": ["error", "always"], // 객체의 메서드 표현 시 축약 메소드 표기를 사용한다.
-    "no-self-assign": ["error", { "props": true }] // 자기 참조 할당은 하지 않는다.
+    "no-self-assign": ["error", { "props": true }], // 자기 참조 할당은 하지 않는다.
+    "import/no-anonymous-default-export": ["error", {
+      "allowArray": true,
+      "allowArrowFunction": true,
+      "allowAnonymousClass": true,
+      "allowAnonymousFunction": true,
+      "allowCallExpression": true, // The true value here is for backward compatibility
+      "allowLiteral": true,
+      "allowObject": true
+    }]
   }
 }
