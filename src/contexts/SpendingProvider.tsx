@@ -7,7 +7,7 @@ interface SpendingInput {
   content: string;
   amount: number;
 }
-interface Spending extends SpendingInput {
+export interface Spending extends SpendingInput {
   id: string;
 }
 
@@ -15,7 +15,7 @@ interface ISpendingContext {
   spending: Spending[];
   addSpending({ date, content, amount }: SpendingInput): void;
   updateSpending({ id, date, content, amount }: Spending): void;
-  removeSpending(props: { id: string }): void;
+  removeSpending(id: string): void;
 }
 
 const SpendingContext = createContext<ISpendingContext>({} as ISpendingContext);
@@ -55,8 +55,8 @@ const SpendingProvider = ({
     );
   };
 
-  const removeSpending = (props: { id: string }) => {
-    setSpending(spending.filter((item: Spending) => item.id !== props.id));
+  const removeSpending = (id: string) => {
+    setSpending(spending.filter((item: Spending) => item.id !== id));
   };
 
   return (
