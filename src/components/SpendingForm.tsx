@@ -2,17 +2,11 @@ import { useSpending } from '@contexts/SpendingProvider';
 import styled from '@emotion/styled';
 import { ChangeEvent, FormEvent, useCallback, useState } from 'react';
 import { BsPlusCircleFill } from 'react-icons/bs';
-
-const formattedDate = (date: Date) =>
-  `${date.getFullYear()}-${
-    (date.getMonth() + 1).toString().length > 2
-      ? date.getMonth() + 1
-      : `0${date.getMonth() + 1}`
-  }-${date.getDate()}`;
+import { formattedAmount, formattedDate } from '@utils/formattedNumber';
 
 const SpendingForm = () => {
   const [spending, setSpending] = useState({
-    date: formattedDate(new Date()),
+    date: formattedDate(new Date(), '-'),
     content: '',
     amount: 0,
   });
@@ -32,7 +26,7 @@ const SpendingForm = () => {
         return;
       }
 
-      addSpending(spending);
+      addSpending({ ...spending, content: spending.content.trim() });
       setSpending({
         ...spending,
         content: '',
@@ -97,13 +91,7 @@ const SpendingForm = () => {
         <AmountInput
           type="text"
           name="spending-amount"
-          value={
-            (spending.amount > 0 &&
-              spending.amount
-                .toString()
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')) ||
-            ''
-          }
+          value={formattedAmount(spending.amount) || ''}
           onChange={onChangeAmount}
           autoComplete="off"
           placeholder="0"
@@ -119,12 +107,13 @@ const SpendingForm = () => {
 
 const Form = styled.form`
   width: calc(100% - 16px);
-  min-height: 12%;
   justify-content: center;
   align-items: center;
   margin: 16px auto;
   display: flex;
   flex-wrap: wrap;
+  flex-basis: 12%;
+  flex-shrink: 1;
 `;
 
 const DateInput = styled.input`
