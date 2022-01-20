@@ -16,7 +16,7 @@ const SpendingList = () => {
   });
   const years = [];
   const months = [];
-  const { spending } = useSpending();
+  const { spending, removeSpending } = useSpending();
   const [filteredSpending, setFilteredSpending] = useState<Spending[]>();
   const [totalAmount, setTotalAmount] = useState(0);
 
@@ -113,7 +113,7 @@ const SpendingList = () => {
                 </Inner>
                 <IconGroup>
                   <FiEdit3 />
-                  <AiOutlineDelete />
+                  <AiOutlineDelete onClick={() => id && removeSpending(id)} />
                 </IconGroup>
               </Item>
             );
