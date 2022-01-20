@@ -1,17 +1,16 @@
 import { useSpending } from '@contexts/SpendingProvider';
 import styled from '@emotion/styled';
-import { useEffect } from 'react';
 import { ChangeEvent, FormEvent, useCallback, useState } from 'react';
 import { BsPlusCircleFill } from 'react-icons/bs';
 
-const SpendingForm = () => {
-  const formattedDate = (date: Date) =>
-    `${date.getFullYear()}-${
-      (date.getMonth() + 1).toString().length > 2
-        ? date.getMonth() + 1
-        : `0${date.getMonth() + 1}`
-    }-${date.getDate()}`;
+const formattedDate = (date: Date) =>
+  `${date.getFullYear()}-${
+    (date.getMonth() + 1).toString().length > 2
+      ? date.getMonth() + 1
+      : `0${date.getMonth() + 1}`
+  }-${date.getDate()}`;
 
+const SpendingForm = () => {
   const [spending, setSpending] = useState({
     date: formattedDate(new Date()),
     content: '',
@@ -19,22 +18,29 @@ const SpendingForm = () => {
   });
   const { addSpending } = useSpending();
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    (e: FormEvent) => {
+      e.preventDefault();
 
-    if (spending.date.length !== 10 || !spending.content || !spending.amount) {
-      alert('[error] 비어있는 입력값이 있습니다.');
+      if (
+        spending.date.length !== 10 ||
+        !spending.content ||
+        !spending.amount
+      ) {
+        alert('[error] 비어있는 입력값이 있습니다.');
 
-      return;
-    }
-    console.log(spending.date, spending.content, spending.amount);
-    addSpending(spending);
-    setSpending({
-      ...spending,
-      content: '',
-      amount: 0,
-    });
-  };
+        return;
+      }
+
+      addSpending(spending);
+      setSpending({
+        ...spending,
+        content: '',
+        amount: 0,
+      });
+    },
+    [spending, addSpending],
+  );
 
   const onChangeDate = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
@@ -59,13 +65,14 @@ const SpendingForm = () => {
   const onChangeAmount = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       if (typeof parseInt(e.target?.value) !== 'number') {
-        console.log(typeof parseInt(e.target.value));
-
         return;
       }
 
-      const inputValue = e.target.value?.replace(/[^0-9]|^0+/g, '') || '0';
-      setSpending({ ...spending, amount: parseInt(inputValue) });
+      const inputValue = e.target.value?.replace(/[^0-9]|^0+/g, '');
+      setSpending({
+        ...spending,
+        amount: parseInt(inputValue) !== NaN ? parseInt(inputValue) : 0,
+      });
     },
     [spending],
   );
@@ -95,10 +102,15 @@ const SpendingForm = () => {
           type="text"
           name="spending-amount"
           value={
-            spending.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ||
+            (spending.amount > 0 &&
+              spending.amount
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ',')) ||
             ''
           }
           onChange={onChangeAmount}
+          autoComplete="off"
+          placeholder="0"
         />
         <AmountUnit>₩</AmountUnit>
       </AmountWrapper>
@@ -120,7 +132,7 @@ const Form = styled.form`
 `;
 
 const DateInput = styled.input`
-  width: 184px;
+  width: 240px;
   height: 40px;
   border-radius: 4px;
   border: none;
