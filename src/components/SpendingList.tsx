@@ -96,7 +96,7 @@ const SpendingList = () => {
         </SelectorGroup>
         <TotalAmount>
           <AmountLabel>Total</AmountLabel>
-          <Amount>₩ {formattedAmount(totalAmount)}</Amount>
+          <Amount>{formattedAmount(totalAmount)} 원</Amount>
         </TotalAmount>
       </Wrapper>
       {filteredSpending && filteredSpending.length > 0 && (
@@ -108,7 +108,7 @@ const SpendingList = () => {
                   <SpendingDate>{date.split('-').join('.')}</SpendingDate>
                   <SpendingContent>{content}</SpendingContent>
                   <SpendingAmount value={amount}>
-                    {formattedAmount(amount)} 원
+                    ₩ {formattedAmount(amount)}
                   </SpendingAmount>
                 </Inner>
                 <IconGroup>
@@ -168,7 +168,7 @@ const TotalAmount = styled.section`
 `;
 
 const AmountLabel = styled.label`
-  font-size: 12px;
+  font-size: 0.9em;
   margin-right: 16px;
 `;
 
@@ -176,6 +176,9 @@ const Amount = styled.article`
   color: #f93f77;
   font-size: 1.5em;
   white-space: nowrap;
+  font-weight: bold;
+  height: 40px;
+  line-height: 40px;
 `;
 
 const List = styled.ul`
@@ -197,9 +200,11 @@ const Item = styled.li`
 const Inner = styled.div`
   width: calc(100% - 48px);
   display: flex;
-  padding: 8px;
+  padding: 0 8px;
+  min-height: 40px;
+  line-height: 40px;
 
-  @media (max-width: 600px) {
+  @media (max-width: 874px) {
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
@@ -207,12 +212,10 @@ const Inner = styled.div`
 `;
 
 const SpendingDate = styled.div`
-  height: 18px;
-  line-height: 24px;
   flex-basis: 20%;
   text-align: center;
   color: #a5a5a5;
-  font-size: 0.8em;
+  font-size: 0.9em;
 `;
 
 const SpendingContent = styled.div`
@@ -225,11 +228,11 @@ const SpendingAmount = styled.div`
   text-align: right;
   ${(props: { value: number }) => props.value >= 100000 && 'color: #F93F77'};
   white-space: nowrap;
+  font-weight: bold;
 `;
 
 const IconGroup = styled.div`
   width: 48px;
-  height: 16px;
   color: #a5a5a5;
   display: flex;
   justify-content: center;
@@ -238,6 +241,11 @@ const IconGroup = styled.div`
   & > * {
     cursor: pointer;
     margin: 0 2px;
+  }
+
+  @media (max-width: 874px) {
+    align-self: flex-start;
+    margin-top: 8px;
   }
 `;
 
