@@ -24,7 +24,7 @@ const SpendingForm = () => {
 
       if (
         spending.date.length !== 10 ||
-        !spending.content ||
+        !spending.content.trim() ||
         !spending.amount
       ) {
         alert('[error] 비어있는 입력값이 있습니다.');
@@ -51,13 +51,9 @@ const SpendingForm = () => {
 
   const onChangeContent = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      if (e.target?.value.length > 20) {
-        alert('최대 20자를 넘길 수 없어요!');
+      const value = e.target?.value;
 
-        return;
-      }
-
-      setSpending({ ...spending, content: e.target?.value });
+      setSpending({ ...spending, content: value });
     },
     [spending],
   );
