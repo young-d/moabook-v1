@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
 import { VALID_YEAR_OLDEST, VALID_YEAR_LATEST } from '@utils/constants';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, MouseEventHandler, useEffect, useState } from 'react';
 import { Spending, useSpending } from '@contexts/SpendingProvider';
 import { formattedAmount } from '@utils/formattedNumber';
 import { FiEdit3 } from 'react-icons/fi';
 import { AiOutlineDelete } from 'react-icons/ai';
+import dynamic from 'next/dynamic';
+import UpdateModal from './UpdateModal';
 
 const SpendingList = () => {
   const date = new Date();
@@ -19,6 +21,7 @@ const SpendingList = () => {
   const { spending, removeSpending } = useSpending();
   const [filteredSpending, setFilteredSpending] = useState<Spending[]>();
   const [totalAmount, setTotalAmount] = useState(0);
+  const [editableSpending, setEditableSpending] = useState('');
 
   useEffect(() => {
     setFilteredSpending(() =>
@@ -65,62 +68,73 @@ const SpendingList = () => {
     setSelectedDate({ ...selectedDate, month: e.target?.value });
   };
 
+  const handleClickEditBtn = (id: string) => {
+    id && setEditableSpending(id);
+  };
+
   return (
-    <ListContainer>
-      <Wrapper>
-        <SelectorGroup>
-          <Select
-            name="year"
-            id="year-select"
-            onChange={handleYearChange}
-            defaultValue={selectedDate.year}>
-            {years.map((value, index) => (
-              <option key={index} value={value}>
-                {value}
-              </option>
-            ))}
-          </Select>
-          <SelectLabel>년</SelectLabel>
-          <Select
-            name="month"
-            id="month-select"
-            onChange={handleMonthChange}
-            defaultValue={selectedDate.month}>
-            {months.map((value, index) => (
-              <option key={index} value={value}>
-                {value}
-              </option>
-            ))}
-          </Select>
-          <SelectLabel>월</SelectLabel>
-        </SelectorGroup>
-        <TotalAmount>
-          <AmountLabel>Total</AmountLabel>
-          <Amount>{formattedAmount(totalAmount)} 원</Amount>
-        </TotalAmount>
-      </Wrapper>
-      {filteredSpending && filteredSpending.length > 0 && (
-        <List>
-          {filteredSpending.map(({ id, date, content, amount }) => {
-            return (
-              <Item key={id}>
-                <Inner>
-                  <SpendingDate>{date.split('-').join('.')}</SpendingDate>
-                  <SpendingContent>{content}</SpendingContent>
-                  <SpendingAmount value={amount}>
-                    ₩ {formattedAmount(amount)}
-                  </SpendingAmount>
-                </Inner>
-                <IconGroup>
-                  <FiEdit3 />
-                  <AiOutlineDelete onClick={() => id && removeSpending(id)} />
-                </IconGroup>
-              </Item>
-            );
-          })}
-        </List>
-      )}
-    </ListContainer>
+    <>
+      <ListContainer>
+        <Wrapper>
+          <SelectorGroup>
+            <Select
+              name="year"
+              id="year-select"
+              onChange={handleYearChange}
+              defaultValue={selectedDate.year}>
+              {years.map((value, index) => (
+                <option key={index} value={value}>
+                  {value}
+                </option>
+              ))}
+            </Select>
+            <SelectLabel>년</SelectLabel>
+            <Select
+              name="month"
+              id="month-select"
+              onChange={handleMonthChange}
+              defaultValue={selectedDate.month}>
+              {months.map((value, index) => (
+                <option key={index} value={value}>
+                  {value}
+                </option>
+              ))}
+            </Select>
+            <SelectLabel>월</SelectLabel>
+          </SelectorGroup>
+          <TotalAmount>
+            <AmountLabel>Total</AmountLabel>
+            <Amount>{formattedAmount(totalAmount)} 원</Amount>
+          </TotalAmount>
+        </Wrapper>
+        {filteredSpending && filteredSpending.length > 0 && (
+          <List>
+            {filteredSpending.map(({ id, date, content, amount }) => {
+              return (
+                <Item key={id}>
+                  <Inner>
+                    <SpendingDate>{date.split('-').join('.')}</SpendingDate>
+                    <SpendingContent>{content}</SpendingContent>
+                    <SpendingAmount value={amount}>
+                      ₩ {formattedAmount(amount)}
+                    </SpendingAmount>
+                  </Inner>
+                  <IconGroup>
+                    <FiEdit3 onClick={() => handleClickEditBtn(id)} />
+                    <AiOutlineDelete onClick={() => id && removeSpending(id)} />
+                  </IconGroup>
+                </Item>
+              );
+            })}
+          </List>
+        )}
+      </ListContainer>
+      <UpdateModal
+        isVisible={editableSpending ? true : false}
+        onSaveClick={() => console.log('save')}
+        onCancelClick={() => console.log('cancel')}
+      />
+    </>
   );
 };
 
