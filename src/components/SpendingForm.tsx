@@ -54,14 +54,11 @@ const SpendingForm = () => {
 
   const onChangeAmount = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      if (typeof parseInt(e.target?.value) !== 'number') {
-        return;
-      }
-
       const inputValue = e.target.value?.replace(/[^0-9]|^0+/g, '');
+
       setSpending({
         ...spending,
-        amount: parseInt(inputValue) !== NaN ? parseInt(inputValue) : 0,
+        amount: inputValue ? parseInt(inputValue) : 0,
       });
     },
     [spending],
@@ -91,7 +88,7 @@ const SpendingForm = () => {
         <AmountInput
           type="text"
           name="spending-amount"
-          value={formattedAmount(spending.amount) || ''}
+          value={spending.amount ? formattedAmount(spending.amount) : ''}
           onChange={onChangeAmount}
           autoComplete="off"
           placeholder="0"
@@ -112,8 +109,7 @@ const Form = styled.form`
   margin: 16px auto;
   display: flex;
   flex-wrap: wrap;
-  flex-basis: 12%;
-  flex-shrink: 1;
+  min-height: 12%;
 `;
 
 const DateInput = styled.input`
@@ -164,7 +160,7 @@ const AmountInput = styled.input`
   height: 100%;
   border-radius: 4px;
   border: none;
-  padding: 4px 8px;
+  padding: 4px 8px 4px 32px;
   text-align: right;
   font-size: inherit;
 `;
