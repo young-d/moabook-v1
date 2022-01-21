@@ -127,11 +127,11 @@ const SpendingList = () => {
 const ListContainer = styled.div`
   width: 100%;
   flex-basis: 68%;
-  flex-shrink: 3;
   background-color: #efefef;
   border-radius: 70px 70px 0 0;
   margin-top: auto;
   padding: 40px 0;
+  overflow: hidden;
 `;
 
 const Wrapper = styled.section`
@@ -183,8 +183,15 @@ const Amount = styled.article`
 
 const List = styled.ul`
   width: 80%;
-  margin: 0 auto;
+  margin: 8px auto;
   padding: 0;
+  height: calc(100% - 32px);
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 `;
 
 const Item = styled.li`
