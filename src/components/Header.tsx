@@ -20,7 +20,7 @@ const HeaderStyled = styled.div`
   align-items: center;
   position: relative;
   white-space: nowrap;
-  height: 20%;
+  min-height: 20%;
 `;
 
 const Logo = styled.div`

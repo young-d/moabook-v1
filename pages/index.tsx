@@ -18,7 +18,7 @@ const Container = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: column;
-  font-family: 'GmarketSansMedium';
+  font-family: 'Cafe24SsurroundAir';
 `;
 
 export default Home;
