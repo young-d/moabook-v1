@@ -1,11 +1,10 @@
 import styled from '@emotion/styled';
 import { VALID_YEAR_OLDEST, VALID_YEAR_LATEST } from '@utils/constants';
-import { ChangeEvent, MouseEventHandler, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Spending, useSpending } from '@contexts/SpendingProvider';
 import { formattedAmount } from '@utils/formattedNumber';
 import { FiEdit3 } from 'react-icons/fi';
 import { AiOutlineDelete } from 'react-icons/ai';
-import dynamic from 'next/dynamic';
 import UpdateModal from './UpdateModal';
 
 const SpendingList = () => {
@@ -21,7 +20,6 @@ const SpendingList = () => {
   const { spending, removeSpending } = useSpending();
   const [filteredSpending, setFilteredSpending] = useState<Spending[]>();
   const [totalAmount, setTotalAmount] = useState(0);
-  const [editableSpending, setEditableSpending] = useState('');
 
   useEffect(() => {
     setFilteredSpending(() =>
@@ -50,14 +48,8 @@ const SpendingList = () => {
     years.push(`${i}`);
   }
 
-  let validMonth = 1;
-
-  while (validMonth <= 12) {
-    if (selectedDate.year === `${currYear}` && validMonth > currMonth) {
-      break;
-    }
-
-    months.push(`${validMonth >= 10 ? validMonth++ : `0${validMonth++}`}`);
+  for (let i = 1; i <= currMonth; i++) {
+    months.push(`${i >= 10 ? i : `0${i}`}`);
   }
 
   const handleYearChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -66,10 +58,6 @@ const SpendingList = () => {
 
   const handleMonthChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelectedDate({ ...selectedDate, month: e.target?.value });
-  };
-
-  const handleClickEditBtn = (id: string) => {
-    id && setEditableSpending(id);
   };
 
   return (
@@ -120,8 +108,12 @@ const SpendingList = () => {
                     </SpendingAmount>
                   </Inner>
                   <IconGroup>
-                    <FiEdit3 onClick={() => handleClickEditBtn(id)} />
-                    <AiOutlineDelete onClick={() => id && removeSpending(id)} />
+                    <UpdateModal id={id} />
+                    <RemoveIcon>
+                      <AiOutlineDelete
+                        onClick={() => id && removeSpending(id)}
+                      />
+                    </RemoveIcon>
                   </IconGroup>
                 </Item>
               );
@@ -129,11 +121,6 @@ const SpendingList = () => {
           </List>
         )}
       </ListContainer>
-      <UpdateModal
-        isVisible={editableSpending ? true : false}
-        onSaveClick={() => console.log('save')}
-        onCancelClick={() => console.log('cancel')}
-      />
     </>
   );
 };
@@ -219,7 +206,7 @@ const Item = styled.li`
 `;
 
 const Inner = styled.div`
-  width: calc(100% - 48px);
+  width: calc(100% - 80px);
   display: flex;
   padding: 0 8px;
   min-height: 40px;
@@ -252,17 +239,19 @@ const SpendingAmount = styled.div`
   font-weight: bold;
 `;
 
-const IconGroup = styled.div`
-  width: 48px;
+const RemoveIcon = styled.div`
+  width: 24px;
   color: #a5a5a5;
-  display: flex;
-  justify-content: center;
-  margin: 0 auto;
+  font-size: 1.1em;
+  cursor: pointer;
+`;
 
-  & > * {
-    cursor: pointer;
-    margin: 0 2px;
-  }
+const IconGroup = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  width: 80px;
+  justify-content: flex-end;
+  align-content: center;
 
   @media (max-width: 874px) {
     align-self: flex-start;
