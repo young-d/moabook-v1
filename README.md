@@ -1,34 +1,25 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Moa Book - v.1
 
-## Getting Started
 
-First, run the development server:
+### 기획 의도
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+- 수입은 대부분 고정적인데 비해 지출은 시기와 금액을 예측하기 힘들다. 
+- 월별로 지출 내역만 따로 모아서 확인할 수 있는 서비스가 필요하다.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 실행
+$ ```yarn```
+$ ```yarn dev```
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### 기술 스택
+- 개발 환경: **Node.js** 14.17.6
+- 언어: **Typescript**
+- 라이브러리: **react** 17.0.2
+- 상태관리: **react context api**
+- 스타일링: **emotion** 11.5.0
+- 형상관리: **Git**, **Github**
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### 구현 기능
+- 지출내역 추가, 수정, 삭제
+- 월별 지출내역 목록 필터링 및 월별 총 지출금액 조회
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![화면 기록 2022-02-09 오전 3 25 57](https://user-images.githubusercontent.com/70619304/153053126-49145172-7ea1-4db0-b987-40b79a9e3144.gif)
